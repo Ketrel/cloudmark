@@ -1,0 +1,59 @@
+                <form class="form-inline ml-auto" action="index.php" method="get">
+                    <div class="modal fade" id="searchOptions">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Search Options</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <fieldset class="form-group">
+                                        <legend>Search Scope</legend>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="searchLoc" value="global" checked="checked" />
+                                                Global
+                                            </label>                                            
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="searchLoc" value="cat" />
+                                                Category
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                    <br />
+                                    <fieldset class="form-group">
+                                        <legend>Search Type</legend>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" checked="checked" name="searchType" value="both" />
+                                                Both
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="searchType" value="title" />
+                                                Title
+                                            </label>                                            
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="searchType" value="url" />
+                                                URL
+                                            </label>                                            
+                                        </div>                                        
+                                    </fieldset>                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary m-auto" data-dismiss="modal">Ok</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control mr-sm-2" type="text" name="search" id="search" placeholder="Search..." />
+{%EFOREACH:GETSTR%}
+                    <input type="hidden" name="{%GETNAME%}" value="{%GETVALUE%}" />
+{%EEFOREACH:GETSTR%}
+                    <button class="btn btn-primary mr-sm-2" type="button" data-toggle="modal" data-target="#searchOptions"><span class="fa fa-cog fa-lg"></span></button>
+                    <button class="btn" type="submit">Search</button>
+                </form>
