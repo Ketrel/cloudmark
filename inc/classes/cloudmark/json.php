@@ -1,10 +1,8 @@
 <?php
 
-/* Extends DB Class, so require it */
-    require_once(dirname(__FILE__)."/cloudmarksDB.php");
+namespace cloudmark;
 
-
-class cloudmarksJSON extends cloudmarksDB {
+class json extends db {
 
     protected $cdb_pretty = FALSE;
 

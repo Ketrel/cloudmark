@@ -1,5 +1,8 @@
 <?php
-class cloudmarksDB {
+
+namespace cloudmark;
+
+class db{
 /*
     __construct(DBFILE, LOGGING(FALSE))
         Arguments
@@ -109,13 +112,13 @@ class cloudmarksDB {
             throw new Exception('Database file does not exist');
         }
         try {
-            $this->db_db = new PDO('sqlite:'.$dbfile);
+            $this->db_db = new \PDO('sqlite:'.$dbfile);
         }
         catch (Exception $e) {
             throw new Exception('Error Connecting to DB: '.$e->getMessage()."\n");
         }
-        //Set setAttribute(PDO::ATTR_TIMEOUT,6)
-        $this->db_db->setAttribute(PDO::ATTR_TIMEOUT,6);
+        //Set setAttribute(\PDO::ATTR_TIMEOUT,6)
+        $this->db_db->setAttribute(\PDO::ATTR_TIMEOUT,6);
     }
 
     public function setCatPageLimit($limit){
@@ -152,11 +155,11 @@ class cloudmarksDB {
         $query = $baseQuery;
 
         $selectCat = $this->db_db->prepare($query);
-        $selectCat->bindValue(':parent', $catID, PDO::PARAM_INT);
-        $selectCat->bindValue(':limit', $this->db_catPerPage, PDO::PARAM_INT);
-        $selectCat->bindValue(':offset', ($page-1)*$this->db_catPerPage, PDO::PARAM_INT);
+        $selectCat->bindValue(':parent', $catID, \PDO::PARAM_INT);
+        $selectCat->bindValue(':limit', $this->db_catPerPage, \PDO::PARAM_INT);
+        $selectCat->bindValue(':offset', ($page-1)*$this->db_catPerPage, \PDO::PARAM_INT);
         $selectCat->execute();
-        $cats = $selectCat->fetchAll(PDO::FETCH_ASSOC);
+        $cats = $selectCat->fetchAll(\PDO::FETCH_ASSOC);
 
         if(!is_array($cats)){
             return [];
@@ -174,7 +177,7 @@ class cloudmarksDB {
 
         $selectCat = $this->db_db->prepare($query);
         $selectCat->execute();
-        $cats = $selectCat->fetchAll(PDO::FETCH_ASSOC);
+        $cats = $selectCat->fetchAll(\PDO::FETCH_ASSOC);
 
         if(!is_array($cats)){
             return [];
@@ -197,11 +200,11 @@ class cloudmarksDB {
         }else{
             $query = $query." WHERE `parent` = :cat";
             $getCount = $this->db_db->prepare($query);
-            $getCount->bindValue(':cat', $catID, PDO::PARAM_INT);
+            $getCount->bindValue(':cat', $catID, \PDO::PARAM_INT);
         }
 
         $getCount->execute();
-        $count = $getCount->fetch(PDO::FETCH_ASSOC);
+        $count = $getCount->fetch(\PDO::FETCH_ASSOC);
         return $count['count'];
     }
 
@@ -219,11 +222,11 @@ class cloudmarksDB {
         $query = $baseQuery;
 
         $selectSingleCat = $this->db_db->prepare($query);
-        $selectSingleCat->bindValue(':cat',$catID,PDO::PARAM_INT);
+        $selectSingleCat->bindValue(':cat',$catID,\PDO::PARAM_INT);
         $selectSingleCat->execute();
 
 
-        $singleCat = $selectSingleCat->fetch(PDO::FETCH_ASSOC);
+        $singleCat = $selectSingleCat->fetch(\PDO::FETCH_ASSOC);
 
         return $singleCat;
     }
@@ -260,15 +263,15 @@ class cloudmarksDB {
 
         $selectLinks = $this->db_db->prepare($query);
         if(!is_null($searchInfo)){
-            $selectLinks->bindValue(':search','%'.$searchInfo['search'].'%',PDO::PARAM_STR);
+            $selectLinks->bindValue(':search','%'.$searchInfo['search'].'%',\PDO::PARAM_STR);
         }
         if(is_null($searchInfo) || $searchInfo['location'] != "global"){
-            $selectLinks->bindValue(':cat', $catID, PDO::PARAM_INT);
+            $selectLinks->bindValue(':cat', $catID, \PDO::PARAM_INT);
         }
-        $selectLinks->bindValue(':limit', $this->db_linkPerPage, PDO::PARAM_INT);
-        $selectLinks->bindValue(':offset', ($page-1)*$this->db_linkPerPage, PDO::PARAM_INT);
+        $selectLinks->bindValue(':limit', $this->db_linkPerPage, \PDO::PARAM_INT);
+        $selectLinks->bindValue(':offset', ($page-1)*$this->db_linkPerPage, \PDO::PARAM_INT);
         $selectLinks->execute();
-        $links = $selectLinks->fetchAll(PDO::FETCH_ASSOC);
+        $links = $selectLinks->fetchAll(\PDO::FETCH_ASSOC);
 
         if(!is_array($links)){
             return [];
@@ -301,15 +304,15 @@ class cloudmarksDB {
         $getCount = $this->db_db->prepare($query);
 
         if($catID >=0 && !$globalSearch){
-            $getCount->bindValue(':cat', $catID, PDO::PARAM_INT);
+            $getCount->bindValue(':cat', $catID, \PDO::PARAM_INT);
         }
 
         if(!is_null($searchInfo)){
-            $getCount->bindValue(':search','%'.$searchInfo['search'].'%',PDO::PARAM_STR);
+            $getCount->bindValue(':search','%'.$searchInfo['search'].'%',\PDO::PARAM_STR);
         }
 
         $getCount->execute();
-        $count = $getCount->fetch(PDO::FETCH_ASSOC);
+        $count = $getCount->fetch(\PDO::FETCH_ASSOC);
         return $count['count'];
     }
 

@@ -1,9 +1,23 @@
 <?php
 
     /* --- BEGIN GLOBAL SECTION --- */
-        require_once ('./inc/classes/cloudmarksJSON.php');
-        require_once ('./inc/classes/template.php');
-        require_once ('./inc/classes/paginate.php');
+
+        /*
+        function _cmAutoLoad($class){
+            $path = implode('/',explode('\\',$class));
+            require('./inc/classes/'.$path.'.php');
+        }
+        spl_autoload_register('_cmAutoLoad');
+        */
+
+        define('CLASS_DIR','inc/classes');
+        set_include_path(get_include_path().PATH_SEPARATOR.CLASS_DIR);
+        spl_autoload_register();
+
+        //require_once ('./inc/classes/cloudmark/db.php');
+        //require_once ('./inc/classes/cloudmark/json.php');
+        //require_once ('./inc/classes/tpl.php');
+        //require_once ('./inc/classes/paginate.php');
 
         if(!file_exists('./config.ini')){
             die("Config File Missing");

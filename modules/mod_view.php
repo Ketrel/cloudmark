@@ -1,7 +1,8 @@
 <?php
 
     //Initial Setup
-    $linkpage = new cloudmarksJSON($config['database']);
+
+    $linkpage = new cloudmark\json($config['database']);
 
     $currentCategory = (isset($_GET['cat'])) ? (int)$_GET['cat'] : 0;
     $currentPage = (isset($_GET['page']) && $_GET['page'] > 0) ? (int)$_GET['page'] : 1;
