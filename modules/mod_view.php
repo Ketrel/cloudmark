@@ -2,7 +2,7 @@
 
     //Initial Setup
 
-    $linkpage = new cloudmark\json($config['database']);
+    $linkpage = new cloudmark\db($config['database']);
 
     $currentCategory = (isset($_GET['cat'])) ? (int)$_GET['cat'] : 0;
     $currentPage = (isset($_GET['page']) && $_GET['page'] > 0) ? (int)$_GET['page'] : 1;
@@ -53,17 +53,17 @@
         $globalSearch = TRUE;
     }
 
-    //Load and decode category JSON
-    $cats = json_decode($linkpage->getCats($currentCategory),TRUE);
+    //Load and decode category Array
+    $cats = $linkpage->getCats($currentCategory);
     /*
-        Load and decode links JSON
+        Load links
         If searching, make sure we include the search information
         (an optional argument to cloudmarks::getLinks)
     */
     if(isset($searchInfo['search'])){
-        $links = json_decode($linkpage->getLinks($currentCategory,$currentPage,$searchInfo),TRUE);
+        $links = $linkpage->getLinks($currentCategory,$currentPage,$searchInfo);
     }else{
-        $links = json_decode($linkpage->getLinks($currentCategory,$currentPage),TRUE);
+        $links = $linkpage->getLinks($currentCategory,$currentPage);
     }
 
     if(isset($searchInfo['search'])){
