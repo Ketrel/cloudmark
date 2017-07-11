@@ -173,13 +173,13 @@ namespace cloudmark;
 
             //Rework this into a function and make it match the above stuff
 
-            $regex_match = '/\\{% ?([\' \\.A-Za-z0-9:\\-\\/\\\]+) ?%\\}/i';
+            $regex_match = '/\\{% ?([\'\\.A-Za-z0-9:\\-\\/\\\]+) ?%\\}/i';
 
             preg_match_all($regex_match,$this->tpl_working,$this->tpl_vars,PREG_PATTERN_ORDER);
             $this->tpl_vars = array_values(array_unique($this->tpl_vars[1]));
             foreach($this->tpl_vars as $x){
                 if(isset($this->tpl_values[$x]) && !is_array($this->tpl_values[$x])){
-                    $this->tpl_working = preg_replace('/\\{%\\s?'.preg_quote($x,'/').'\\s?%\\}\r?\n?/',$this->tpl_values[$x],$this->tpl_working);
+                    $this->tpl_working = preg_replace('/\\{% ?'.preg_quote($x,'/').' ?%\\}\r?\n?/',$this->tpl_values[$x],$this->tpl_working);
                 }else{
                     if($this->tpl_removeUnused == TRUE){
                         $this->tpl_working = preg_replace('/\\{% ?'.preg_quote($x,'/').' ?%\\}\r?\n?/','',$this->tpl_working);

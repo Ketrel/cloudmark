@@ -1,10 +1,10 @@
                     <div class="card">
                             <div class="card-block">
-                                <h5 class="card-title mb-0"><a href="{%CATID%}">{%CATEGORY%}</a></h5>
-{%IF:CATDESCRIPTION%}
+                                <h5 class="card-title mb-0"><a href="{% CATID %}">{% CATEGORY %}</a></h5>
+{% if:CATDESCRIPTION %}
                                 <div class="card-text">
-                                    {%CATDESCRIPTION%}
+                                    {% CATDESCRIPTION %}
                                 </div>
-{%ENDIF:CATDESCRIPTION%}
+{% endif:CATDESCRIPTION %}
                             </div>
                     </div>

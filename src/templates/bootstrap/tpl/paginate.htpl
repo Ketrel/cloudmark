@@ -1,1 +1,1 @@
-                    <li class="page-item{%ACTIVE%}"><a class="page-link" href="{%NUMBER%}">{%NAME%}</a></li>
+                    <li class="page-item{% ACTIVE %}"><a class="page-link" href="{% NUMBER %}">{% NAME %}</a></li>
