@@ -70,7 +70,7 @@ namespace cloudmark;
         protected function procIf(){
             $if_controls = [];
 
-            preg_match_all('/(\{% ?(?:IF|if):(.+?) ?%\}\r?\n?)(.+?)(\{% ?(?:ENDIF|endif):\2 ?%\}\r?\n?)/s',$this->tpl_working,$if_controls,PREG_SET_ORDER);
+            preg_match_all('/(\{% ?IF):(.+?) ?%\}\r?\n?)(.+?)(\{% ?ENDIF:\2 ?%\}\r?\n?)/is',$this->tpl_working,$if_controls,PREG_SET_ORDER);
 
             foreach($if_controls as $x){
                 if(!isset($this->tpl_values[$x[2]])){
@@ -83,7 +83,7 @@ namespace cloudmark;
 
         protected function procForeach(){
             $foreach_controls = [];
-            preg_match_all('/\{% ?(?:FOREACH|foreach):(.+?) (?:USE|use) \'([\\.A-Za-z0-9\\-_ ]+)\' ?%\}/',$this->tpl_working,$foreach_controls,PREG_SET_ORDER);
+            preg_match_all('/\{% ?FOREACH:(.+?) USE \'([\\.A-Za-z0-9\\-_ ]+)\' ?%\}/i',$this->tpl_working,$foreach_controls,PREG_SET_ORDER);
             foreach($foreach_controls as $x){
                 if(is_array($this->tpl_values[$x[1]]) && count($this->tpl_values[$x[1]]) > 0){
                     $build = '';
@@ -110,8 +110,7 @@ namespace cloudmark;
                 matching template variable content (which requires an array of template replacements)
             */
             $foreach_controls = [];
-            preg_match_all('/(\\{% ?(?:EFOREACH|eforeach):(.+?) ?%\\}\\r?\\n?)(.+?)(\{% ?(?:EEFOREACH|eforeach):\2 ?%\}\r?
-\n?)/s',$this->tpl_working,$foreach_controls,PREG_SET_ORDER);
+            preg_match_all('/(\\{% ?EFOREACH:(.+?) ?%\\}\\r?\\n?)(.+?)(\{% ?EEFOREACH:\2 ?%\}\r?\n?)/is',$this->tpl_working,$foreach_controls,PREG_SET_ORDER);
             if(!empty($foreach_controls)){
                 foreach($foreach_controls as $val){
                     if(isset($this->tpl_values[$val['2']]) && is_array($this->tpl_values[$val['2']])){
@@ -133,7 +132,7 @@ namespace cloudmark;
             //Don't forget you need to document all this shit
             //Good luck doing that AFTER you write it....moron
             $include_controls = [];
-            preg_match_all('/\\{% ?INCLUDE \'(.+?)\' ?%\\}/',$this->tpl_working,$include_controls,PREG_SET_ORDER);
+            preg_match_all('/\\{% ?INCLUDE \'(.+?)\' ?%\\}/i',$this->tpl_working,$include_controls,PREG_SET_ORDER);
             foreach($include_controls as $x){
                 $file = './'.$x[1].'.htpl';
                 if(file_exists($file)){
@@ -162,7 +161,7 @@ namespace cloudmark;
             $this->procForeach();
 
             //Rework this into a function and make it match the above stuff
-            preg_match_all('/\\{% ?([\' \\.A-Za-z0-9:\\-\\/\\\]+) ?%\\}/',$this->tpl_working,$this->tpl_vars,PREG_PATTERN_ORDER);
+            preg_match_all('/\\{% ?([\' \\.A-Za-z0-9:\\-\\/\\\]+) ?%\\}/i',$this->tpl_working,$this->tpl_vars,PREG_PATTERN_ORDER);
             $this->tpl_vars = array_values(array_unique($this->tpl_vars[1]));
             foreach($this->tpl_vars as $x){
                 if(isset($this->tpl_values[$x]) && !is_array($this->tpl_values[$x])){

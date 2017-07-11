@@ -63,7 +63,7 @@
 {%IF:PAGINATION%}
                 <br />
                 <ul class="pagination justify-content-center">
-{%FOREACH:PAGINATION%}
+{% FOREACH:PAGINATION USE 'paginate.htpl' %}
                 </ul>
 {%ENDIF:PAGINATION%}
             </div>
