@@ -1,1 +1,0 @@
-                                <li><a href="{%URL%}">{%TITLE%}</a>{%IF:DESCRIPTION%} - {%DESCRIPTION%}{%ENDIF:DESCRIPTION%}</li>

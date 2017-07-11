@@ -10,9 +10,11 @@
         spl_autoload_register('_cmAutoLoad');
         */
 
-        define('CLASS_DIR','inc/classes');
-        set_include_path(get_include_path().PATH_SEPARATOR.CLASS_DIR);
-        spl_autoload_register();
+        if(!file_exists(__DIR__.'/../vendor/autoload.php')){
+            define('CLASS_DIR','lib/');
+            set_include_path(get_include_path().PATH_SEPARATOR.CLASS_DIR);
+            spl_autoload_register();
+        }
 
         //require_once ('./inc/classes/cloudmark/db.php');
         //require_once ('./inc/classes/cloudmark/json.php');
@@ -28,6 +30,11 @@
         if(!isset($config['database'])){
             die("No Database Defined In Config");
         }
+
+        $defaultTemplate = "bootstrap2";
+        $templateRoot = 'src/templates';
+        $templateBase = $templateRoot.'/'.(isset($config['template']) ? $config['template'] : $defaultTemplate);
+        $templateDir = $templateBase.'/tpl';
 
         //Set some basic values.
         $debugInfo = "";

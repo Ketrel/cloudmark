@@ -5,14 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>{%TITLE%}</title>
         <!-- Bootstrap core CSS -->
-        <link href="{%TPLPAK%}/css/bootstrap.css" rel="stylesheet" />
-        <link href="{%TPLPAK%}/css/footer.css" rel="stylesheet" />
+        <link href="{%TEMPLATE%}/css/bootstrap.css" rel="stylesheet" />
+        <link href="{%TEMPLATE%}/css/footer.css" rel="stylesheet" />
         <!-- Font Awesome -->
-        <link href="{%TPLPAK%}/css/font-awesome.css" rel="stylesheet" />
+        <link href="{%TEMPLATE%}/css/font-awesome.css" rel="stylesheet" />
         <!-- JQuery -->
-        <script src="{%TPLPAK%}/js/jquery-min.js" type="text/javascript"></script>
+        <script src="{%TEMPLATE%}/js/jquery-min.js" type="text/javascript"></script>
         <!-- Bootstrap JS -->
-        <script src="{%TPLPAK%}/js/bootstrap.js" type="text/javascript"></script>
+        <script src="{%TEMPLATE%}/js/bootstrap.js" type="text/javascript"></script>
     </head>
     <body>
 {%INCLUDE:inc-navbar%}

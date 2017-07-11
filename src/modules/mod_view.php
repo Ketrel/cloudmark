@@ -9,6 +9,7 @@
 
     $debugOn = ((isset($_GET['debug']) && $_GET['debug'] == 1) || (isset($config['debug']) && $config['debug'] == 1)) ? TRUE : FALSE;
 
+    /*
     if(isset($config['tplpak'])){
         $tplpak = $config['tplpak'];
         $tpldir = "./tplpak/{$tplpak}";
@@ -16,6 +17,7 @@
         $tplpak = '';
         $tpldir = "./inc";
     }
+    */
 
     //Set default page limit if not in config
     if(isset($config['links_per_page'])){
@@ -95,7 +97,7 @@
                    ];
         };
 
-        $pages = new paginate(ceil(($totalCatLinks/$linkpage->getLinkPageLimit())),$currentPage,3);
+        $pages = new cloudmark\paginate(ceil(($totalCatLinks/$linkpage->getLinkPageLimit())),$currentPage,3);
         $pages->setCallback($cb);
         $pages->setNextPrev(TRUE);
 
@@ -130,9 +132,7 @@
         $tplVals['SEARCHUNDO'] = './'.$pageBase.'?'.$pageQuery('page',false,0);
     }
 
-    if($tplpak != ''){
-        $tplVals['TPLPAK'] = "./tplpak/{$tplpak}";
-    }
+    $tplVals['TEMPLATE'] = $templateBase;
 
     /* Begin Debug Code */
     if($debugOn){
@@ -143,7 +143,7 @@
 
     //Section to add pagination to template variables
     if(isset($pageList) && count($pageList) > 0){
-        $tplVals['PAGINATION'] = [0=>$tpldir.'/tpl/paginate.htpl',1=>$pageList];
+        $tplVals['PAGINATION'] = [0=>$templateDir.'/paginate.htpl',1=>$pageList];
     }
 
     //Generate Breadcrumbs
@@ -186,7 +186,7 @@
     if(count($cats) > 0 && !$globalSearch){
 
         $tplVals['CATEGORIES'] = [];
-        $tplVals['CATEGORIES'][0] = $tpldir.'/tpl/entry-cat.htpl';
+        $tplVals['CATEGORIES'][0] = $templateDir.'/entry-cat.htpl';
         $i = 0;
         $pq = $pageBase.$pageQuery(['cat','page'],TRUE).'cat=';
         foreach($cats as $cat){
@@ -203,7 +203,7 @@
 
     if(count($links) > 0){
         $tplVals['LINKS'] = [];
-        $tplVals['LINKS'][0] = $tpldir.'/tpl/entry-link.htpl';
+        $tplVals['LINKS'][0] = $templateDir.'/entry-link.htpl';
         $i = 0;
         foreach($links as $link){
             $tplVals['LINKS'][1][] = [
@@ -233,8 +233,8 @@
 
 
     //Template file, template replacements, if true, remove unused tags
-    $tpl = new tpl($tpldir.'/tpl/view.htpl',$tplVals,TRUE);
-    $tpl->setPath($tpldir.'/tpl/');
+    $tpl = new cloudmark\tpl($templateDir.'/view.htpl',$tplVals,TRUE);
+    $tpl->setPath($templateDir);
 
     print $tpl->buildOutput();
 ?>

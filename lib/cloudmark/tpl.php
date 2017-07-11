@@ -1,5 +1,7 @@
 <?php
 
+namespace cloudmark;
+
     class tpl{
 
         protected $tpl_raw = '';
@@ -54,13 +56,13 @@
 
         protected function loadTpl($template){
             if(!file_exists($template)){
-                throw new Exception("Error: Invalid Template File");
+                throw new \Exception("Error: Invalid Template File: {$template}");
             }else{
                 $output = file_get_contents($template);
                 if($output != ''){
                     return $output;
                 }else{
-                    throw new Exception("Error: Empty Template File");
+                    throw new \Exception("Error: Empty Template File");
                 }
             }
         }
@@ -139,8 +141,8 @@
                 $file = './'.$x[1].'.htpl';
                 if(file_exists($file)){
 
-                }elseif(file_exists($this->tpl_path.$x[1].'.htpl')){
-                    $file = $this->tpl_path.$x[1].'.htpl';
+                }elseif(file_exists($this->tpl_path.'/'.$x[1].'.htpl')){
+                    $file = $this->tpl_path.'/'.$x[1].'.htpl';
                 }else{
                     $file = null;
                 }
@@ -212,7 +214,7 @@
                     }
                     break;
                 default:
-                    throw new Exception("Error: First Parameter Must Be Valid (Valid Types Are: 'file' and 'embedded')");
+                    throw new \Exception("Error: First Parameter Must Be Valid (Valid Types Are: 'file' and 'embedded')");
                     break;
             }
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace cloudmark;
+
     class paginate{
 
         protected $pg_total = 0;
