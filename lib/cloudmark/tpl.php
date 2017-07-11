@@ -70,7 +70,7 @@ namespace cloudmark;
         protected function procIf(){
             $if_controls = [];
 
-            preg_match_all('/(\{% ?IF):(.+?) ?%\}\r?\n?)(.+?)(\{% ?ENDIF:\2 ?%\}\r?\n?)/is',$this->tpl_working,$if_controls,PREG_SET_ORDER);
+            preg_match_all('/(\{% ?IF:(.+?) ?%\}\r?\n?)(.+?)(\{% ?ENDIF:\2 ?%\}\r?\n?)/is',$this->tpl_working,$if_controls,PREG_SET_ORDER);
 
             foreach($if_controls as $x){
                 if(!isset($this->tpl_values[$x[2]])){
