@@ -16,15 +16,16 @@
             spl_autoload_register();
         }
 
-        //require_once ('./inc/classes/cloudmark/db.php');
-        //require_once ('./inc/classes/cloudmark/json.php');
-        //require_once ('./inc/classes/tpl.php');
-        //require_once ('./inc/classes/paginate.php');
-
         if(!file_exists('./config.ini')){
             die("Config File Missing");
         }else{
             $config = parse_ini_file('./config.ini');
+        }
+
+        if(file_exists('./custom.ini')){
+            $tplCustom = parse_ini_file('./custom.ini');
+        }else{
+            $tplCustom = [];
         }
 
         if(!isset($config['database'])){

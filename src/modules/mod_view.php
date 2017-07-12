@@ -229,9 +229,19 @@
 
 
     //Template file, template replacements, if true, remove unused tags
-    $tpl = new cloudmark\tpl($templateDir.'/view.htpl',$tplVals,TRUE);
-    $tpl->setPath($templateDir);
 
-    //var_export($tplVals); die();
-    print $tpl->buildOutput();
+    if(empty($tplCustom)){
+        $tpl = new cloudmark\tpl($templateDir.'/view.htpl',$tplVals,TRUE);
+        $tpl->setPath($templateDir);
+        echo $tpl->buildOutput();
+    }else{
+        $tpl = new cloudmark\tpl($templateDir.'/view.htpl',$tplVals,FALSE);
+        $tpl->setPath($templateDir);
+        $interim = $tpl->buildOutput();
+        $tpl = new cloudmark\tpl($interim,$tplCustom,TRUE,TRUE);
+        $tpl->setPath($templateDir);
+        echo $tpl->buildOutput();
+    }
+
+
 ?>
