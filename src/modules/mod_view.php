@@ -2,7 +2,7 @@
 
     //Initial Setup
 
-    $linkpage = new cloudmark\db($config['database']);
+    $linkpage = new cloudmark\db(BASEUSEDIR.'/'.$config['database']);
 
     $currentCategory = (isset($_GET['cat'])) ? (int)$_GET['cat'] : 0;
     $currentPage = (isset($_GET['page']) && $_GET['page'] > 0) ? (int)$_GET['page'] : 1;
@@ -132,7 +132,7 @@
         $tplVals['SEARCHUNDO'] = './'.$pageBase.'?'.$pageQuery('page',false,0);
     }
 
-    $tplVals['TEMPLATE'] = $templateBase;
+    $tplVals['TEMPLATE'] = $templateRelPath;
 
     /* Begin Debug Code */
     if($debugOn){

@@ -1,8 +1,7 @@
 <?php
 
     define('BASERUNDIR',__DIR__);
-    define('BASEUSEDIR',__DIR__);
-
+    define('BASEUSEDIR',__DIR__.'/..');
 
     if(isset($_SERVER['HTTP_X_FORWARDED_URI'])){
         $_SERVER['REQUEST_URI'] = $_SERVER['HTTP_X_FORWARDED_URI'];

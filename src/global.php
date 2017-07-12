@@ -2,28 +2,20 @@
 
     /* --- BEGIN GLOBAL SECTION --- */
 
-        /*
-        function _cmAutoLoad($class){
-            $path = implode('/',explode('\\',$class));
-            require('./inc/classes/'.$path.'.php');
-        }
-        spl_autoload_register('_cmAutoLoad');
-        */
-
         if(!file_exists(__DIR__.'/../vendor/autoload.php')){
-            define('CLASS_DIR','lib/');
+            define('CLASS_DIR',BASEUSEDIR.'/lib/');
             set_include_path(get_include_path().PATH_SEPARATOR.CLASS_DIR);
             spl_autoload_register();
         }
 
-        if(!file_exists('./config.ini')){
+        if(!file_exists(BASEUSEDIR.'/config.ini')){
             die("Config File Missing");
         }else{
-            $config = parse_ini_file('./config.ini');
+            $config = parse_ini_file(BASEUSEDIR.'/config.ini');
         }
 
-        if(file_exists('./custom.ini')){
-            $tplCustom = parse_ini_file('./custom.ini');
+        if(file_exists(BASEUSEDIR.'/custom.ini')){
+            $tplCustom = parse_ini_file(BASEUSEDIR.'/custom.ini');
         }else{
             $tplCustom = [];
         }
@@ -32,10 +24,15 @@
             die("No Database Defined In Config");
         }
 
-        $defaultTemplate = "bootstrap2";
-        $templateRoot = 'src/templates';
+        $defaultTemplate = "bootstrap";
+
+        $templateRoot = BASEUSEDIR.'/src/templates';
         $templateBase = $templateRoot.'/'.(isset($config['template']) ? $config['template'] : $defaultTemplate);
+        $templateRelPath = str_replace(BASERUNDIR,'',BASEUSEDIR).'/src/templates/'.(isset($config['template']) ? $config['template'] : $defaultTemplate);
         $templateDir = $templateBase.'/tpl';
+
+        //echo BASERUNDIR."\n".BASEUSEDIR."\n\n"; //Debug
+        //echo "{$templateRoot}\n{$templateBase}\n{$templateDir}\n{$templateRelPath}\n\n\n"; //Debug
 
         //Set some basic values.
         $debugInfo = "";

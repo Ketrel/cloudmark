@@ -109,13 +109,13 @@ class db{
     public function __construct($dbfile, $logging=false){
         //Will load the database
         if (!file_exists($dbfile)){
-            throw new Exception('Database file does not exist');
+            throw new \Exception('Database file does not exist');
         }
         try {
             $this->db_db = new \PDO('sqlite:'.$dbfile);
         }
         catch (Exception $e) {
-            throw new Exception('Error Connecting to DB: '.$e->getMessage()."\n");
+            throw new \Exception('Error Connecting to DB: '.$e->getMessage()."\n");
         }
         //Set setAttribute(\PDO::ATTR_TIMEOUT,6)
         $this->db_db->setAttribute(\PDO::ATTR_TIMEOUT,6);
@@ -146,10 +146,10 @@ class db{
             $baseQuery = "SELECT `id`, `title`, `description`, `parent` FROM `cats` WHERE `parent` = :parent ORDER BY `title` LIMIT :limit OFFSET :offset";
         /* --- END BASE QUERY --- */
         if(!is_int($catID) || $catID < 0){
-            throw new Exception('catID must be a postitive integer');
+            throw new \Exception('catID must be a postitive integer');
         }
         if(!is_int($page)){
-            throw new Exception('If Page is specified, page must be an integer');
+            throw new \Exception('If Page is specified, page must be an integer');
         }
 
         $query = $baseQuery;
@@ -196,7 +196,7 @@ class db{
         if($catID == -1){
             $getCount = $this->db_db->prepare($query);
         }elseif($catID < 0){
-            throw new Exception("Error: catID cannot be a negative value other than -1 which has special handling");
+            throw new \Exception("Error: catID cannot be a negative value other than -1 which has special handling");
         }else{
             $query = $query." WHERE `parent` = :cat";
             $getCount = $this->db_db->prepare($query);
@@ -213,7 +213,7 @@ class db{
             $baseQuery = "SELECT `id`, `title`, `description`, `parent` FROM `cats` WHERE `id` = :cat";
         /* --- END BASE QUERY --- */
         if(!is_int($catID) || $catID < 0){
-            throw new Exception('catID must be a postitive integer');
+            throw new \Exception('catID must be a postitive integer');
         }
         if($catID == 0){
             return [];
@@ -243,10 +243,10 @@ class db{
         }
 
         if(!is_int($catID) || $catID < 0){
-            throw new Exception('catID must be a postitive integer');
+            throw new \Exception('catID must be a postitive integer');
         }
         if(!is_int($page)){
-            throw new Exception('If Page is specified, page must be an integer');
+            throw new \Exception('If Page is specified, page must be an integer');
         }
 
         $query = $baseQuery;
@@ -294,7 +294,7 @@ class db{
         if($catID >= 0 && !$globalSearch){
             $query = $query." JOIN `cat_membership` AS c ON c.`linkID` = l.`id` AND c.`catID` = :cat";
         }elseif($catID < -1){
-            throw new Exception("Error: catID cannot be a negative value other than -1 which has special handling");
+            throw new \Exception("Error: catID cannot be a negative value other than -1 which has special handling");
         }
 
         if(!is_null($searchInfo)){
