@@ -254,7 +254,6 @@ namespace cloudmark;
                     $this->tpl_working = preg_replace('/\\{% ?'.preg_quote($x,'/').' ?%\\}\r?\n?/',$this->tpl_values[$x],$this->tpl_working);
                 }else{
                     if($this->tpl_removeUnused == TRUE){
-                        echo "doing this";
                         $this->tpl_working = preg_replace('/\\{% ?'.preg_quote($x,'/').' ?%\\}\r?\n?/','',$this->tpl_working);
                     }
                 }
