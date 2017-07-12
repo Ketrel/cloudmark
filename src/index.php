@@ -22,8 +22,8 @@
         die();
     }elseif($section == 'view'){
         require_once(BASEUSEDIR."/src/modules/mod_view.php");
-    }elseif($section == 'add'){
-        require_once(BASEUSEDIR."/src/modules/mod_add.php");
+    }elseif($section == 'mod' && isset($config['enableMod']) && $config['enableMod'] == true){
+        require_once(BASEUSEDIR."/src/modules/mod_mod.php");
     }else{
         header("Location: ".'./'.basename($_SERVER['PHP_SELF'])."?s=view");
     }

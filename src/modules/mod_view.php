@@ -116,6 +116,13 @@
                                    ],
                                   ],
                ];
+    if(isset($config['enableMod']) && $config['enableMod'] == true){
+        $tplVals['NAVLINKS'][] = [
+                                  'LINKNAME'=>'Mod',
+                                  'URL'=>'./index.php?s=mod',
+                                  'ACTIVE'=>'',
+                                 ];
+    }
 
     if(!empty($_GET)){
         $getarr = [];

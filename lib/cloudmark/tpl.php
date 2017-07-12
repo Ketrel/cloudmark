@@ -196,7 +196,7 @@ namespace cloudmark;
 
             $include_controls = [];
 
-            $regex_match = '/\\{% ?INCLUDE \'(.+?)\' ?%\\}/i';
+            $regex_match = '/\\{% ?INCLUDE \'(.+?)\' ?%\\}\r?\n?/i';
 
             preg_match_all($regex_match,$this->tpl_working,$include_controls,PREG_SET_ORDER);
 
@@ -207,7 +207,9 @@ namespace cloudmark;
 
             foreach($include_controls as $x){
 
-                $file = './'.$x[1].'.htpl';
+                //$file = './'.$x[1].'.htpl';
+
+                $file = $this->tpl_path.'/'.$x[1];
 
                 if(strstr($file,"..") !== FALSE){
                     $this->errorSet("Filenames for includes cannot contain '..'");
@@ -216,13 +218,16 @@ namespace cloudmark;
 
                 if(file_exists($file)){
 
-                }elseif(file_exists($this->tpl_path.'/'.$x[1].'.htpl')){
-                    $file = $this->tpl_path.'/'.$x[1].'.htpl';
+                }elseif(file_exists($file.'.htpl')){
+                    $file = $file.'.htpl';
                 }else{
                     $file = null;
                 }
+
                 if($file != null){
                     $this->replaceSection($x[0],(new tpl($file,$this->tpl_values,$this->tpl_removeUnused,FALSE,$this->tpl_path,$this->tpl_preserveTests))->buildOutput());
+                }else{
+                    $this->blankOutSection($x[0]);
                 }
             }
         }

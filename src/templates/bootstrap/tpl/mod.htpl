@@ -1,19 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>{% TITLE %}</title>
-        <!-- Bootstrap core CSS -->
-        <link href="{% TEMPLATE %}/css/bootstrap.css" rel="stylesheet">
-        <link href="{% TEMPLATE %}/css/footer.css" rel="stylesheet">
-        <!-- JQuery -->
-        <script src="{% TEMPLATE %}/js/jquery-min.js" type="text/javascript"></script>
-        <!-- Bootstrap JS -->
-        <script src="{% TEMPLATE %}/js/bootstrap.js" type="text/javascript"></script>
+{% include 'header.htpl' %}
     </head>
     <body> {% include 'inc-navbar' %}
         <br />
+{% include 'subsec-nav.htpl' %}
         <div id="main" class="container bg-faded rounded p-3">
 {% if:FORM %}
             <form action="." method="get">
