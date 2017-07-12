@@ -12,6 +12,11 @@ namespace cloudmark;
         protected $tpl_removeUnused = FALSE;
         protected $tpl_path = '';
         protected $tpl_values_build = [];
+        protected $tpl_pathSet = FALSE;
+        protected $tpl_errorState = 0;
+        protected $tpl_errorMsg = [];
+
+
 
         public function __construct($template,array $tplvals=NULL,$removeUnused=FALSE,bool $isIncluded=FALSE,$presetPath=FALSE){
             if(is_a($template,'tplHelper')){
@@ -34,8 +39,23 @@ namespace cloudmark;
                 }
                 if($presetPath !== FALSE){
                     $this->tpl_path = $presetPath;
+                    $this->tpl_pathSet = TRUE;
                 }
             }
+        }
+
+        private function errorCheck(){
+            return ($this->tpl_errorState > 0);
+        }
+
+        private function errorSet($msg){
+            $this->tpl_errorMsg[] = $msg;
+            $this->tpl_errorState++;
+            return $msg;
+        }
+
+        private function errorMsg(){
+            return implode("\n",$this->tpl_errorMsg);
         }
 
         protected function blankOutSection($section){
@@ -52,6 +72,7 @@ namespace cloudmark;
 
         public function setPath($path){
             $this->tpl_path = $path;
+            $this->tpl_pathSet = TRUE;
         }
 
         protected function loadTpl($template){
@@ -68,6 +89,10 @@ namespace cloudmark;
         }
 
         protected function procIf(){
+            if($this->errorCheck()){
+                return;
+            }
+
             $if_controls = [];
 
             $regex_match = '/(\{% ?IF:(.+?) ?%\}\r?\n?)(.+?)(\{% ?ENDIF:\2 ?%\}\r?\n?)/is';
@@ -84,12 +109,24 @@ namespace cloudmark;
         }
 
         protected function procForeach(){
+            if($this->errorCheck()){
+                return;
+            }
+
             $foreach_controls = [];
 
             $regex_match = '/\{% ?FOREACH:(.+?) USE \'([\\.A-Za-z0-9\\-_ ]+)\' ?%\}/i';
 
             preg_match_all($regex_match,$this->tpl_working,$foreach_controls,PREG_SET_ORDER);
+
+            if(!empty($foreach_controls) && $this->tpl_pathSet == FALSE){
+                $this->tpl_errorState++;
+                $this->errorSet("To use 'foreach' in templates, a path must be set either explicitly with tpl::setPath, or by including during object instantiation.");
+                return;
+            }
+
             foreach($foreach_controls as $x){
+
                 if(is_array($this->tpl_values[$x[1]]) && count($this->tpl_values[$x[1]]) > 0){
                     $build = '';
                     if(isset($this->tpl_values[$x[1]][1]) && count($this->tpl_values[$x[1]][1]) > 0){
@@ -114,6 +151,10 @@ namespace cloudmark;
                 and passes them to a new class instance for each
                 matching template variable content (which requires an array of template replacements)
             */
+            if($this->errorCheck()){
+                return;
+            }
+
             $foreach_controls = [];
 
             $regex_match = '/(\\{% ?EFOREACH:(.+?) ?%\\}\\r?\\n?)(.+?)(\{% ?EEFOREACH:\2 ?%\}\r?\n?)/is';
@@ -135,17 +176,34 @@ namespace cloudmark;
         }
 
         protected function procInclude(){
-
             //May be finished
             //Don't forget you need to document all this shit
             //Good luck doing that AFTER you write it....moron
+
+            if($this->errorCheck()){
+                return;
+            }
+
             $include_controls = [];
 
             $regex_match = '/\\{% ?INCLUDE \'(.+?)\' ?%\\}/i';
 
             preg_match_all($regex_match,$this->tpl_working,$include_controls,PREG_SET_ORDER);
+
+            if(!empty($include_controls) && $this->tpl_pathSet == FALSE){
+                $this->errorSet("To use 'include' in templates, a path must be set either explicitly with tpl::setPath, or by including during object instantiation.");
+                return;
+            }
+
             foreach($include_controls as $x){
+
                 $file = './'.$x[1].'.htpl';
+
+                if(strstr($file,"..") !== FALSE){
+                    $this->errorSet("Filenames for includes cannot contain '..'");
+                    return;
+                }
+
                 if(file_exists($file)){
 
                 }elseif(file_exists($this->tpl_path.'/'.$x[1].'.htpl')){
@@ -171,8 +229,12 @@ namespace cloudmark;
             $this->procEForeach();
             $this->procForeach();
 
-            //Rework this into a function and make it match the above stuff
+            if($this->errorCheck()){
+                throw new \Exception($this->errorMsg());
+                return;
+            }
 
+            //Rework this into a function and make it match the above stuff
             $regex_match = '/\\{% ?([\'\\.A-Za-z0-9:\\-\\/\\\]+) ?%\\}/i';
 
             preg_match_all($regex_match,$this->tpl_working,$this->tpl_vars,PREG_PATTERN_ORDER);
@@ -193,8 +255,7 @@ namespace cloudmark;
 
         public function buildOutput(){
             $this->process();
-            //$this->devderp(); //Testing Only
-            return $this->tpl_working; //This is just fo testing
+            return $this->tpl_working;
         }
 
     }
