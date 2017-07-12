@@ -24,7 +24,7 @@
 
 
     $tplVals =  [
-                    'TITLE'=>'Cloudmark Link Adder',
+                    'TITLE'         =>(isset($config['site_name'])) ? $config['site_name'] : "No Name Set",
                     'NAVLINKS'      =>[
                                        [
                                         'LINKNAME'=>'View',

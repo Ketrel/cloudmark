@@ -5,7 +5,7 @@
     </head>
     <body> {% include 'inc-navbar' %}
         <br />
-{% include 'subsec-nav.htpl' %}
+{% include 'inc-subsec.htpl' %}
         <div id="main" class="container bg-faded rounded p-3">
 {% if:FORM %}
             <form action="." method="get">
