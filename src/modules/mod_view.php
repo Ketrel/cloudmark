@@ -143,7 +143,7 @@
 
     //Section to add pagination to template variables
     if(isset($pageList) && count($pageList) > 0){
-        $tplVals['PAGINATION'] = [0=>$templateDir.'/paginate.htpl',1=>$pageList];
+        $tplVals['PAGINATION'] = $pageList;
     }
 
     //Generate Breadcrumbs
@@ -186,16 +186,15 @@
     if(count($cats) > 0 && !$globalSearch){
 
         $tplVals['CATEGORIES'] = [];
-        $tplVals['CATEGORIES'][0] = $templateDir.'/entry-cat.htpl';
         $i = 0;
         $pq = $pageBase.$pageQuery(['cat','page'],TRUE).'cat=';
         foreach($cats as $cat){
-            $tplVals['CATEGORIES'][1][] = [
+            $tplVals['CATEGORIES'][] = [
                                             'CATID'     =>$pq.$cat['id'],
                                             'CATEGORY'  =>$cat['title'],
                                           ];
             if(isset($cat['description'])){
-                $tplVals['CATEGORIES'][1][$i]['CATDESCRIPTION'] = $cat['description'];
+                $tplVals['CATEGORIES'][$i]['CATDESCRIPTION'] = $cat['description'];
             }
             $i++;
         }
@@ -203,28 +202,25 @@
 
     if(count($links) > 0){
         $tplVals['LINKS'] = [];
-        $tplVals['LINKS'][0] = $templateDir.'/entry-link.htpl';
         $i = 0;
         foreach($links as $link){
-            $tplVals['LINKS'][1][] = [
+            $tplVals['LINKS'][] = [
                                       'TITLE'     => ($debugOn) ? "[{$link['id']}] ".$link['title'] : $link['title'],  //For Debug Purposes
                                       'URL'       => $link['url']
                                      ];
-            if(!is_null($link['description'])){ $tplVals['LINKS'][1][$i]['DESCRIPTION'] = $link['description']; }
+            if(!is_null($link['description'])){ $tplVals['LINKS'][$i]['DESCRIPTION'] = $link['description']; }
             $i++;
         }
 
         /* --- Below Bit SHOULD be working how I want now --- */
-        if(count($tplVals['LINKS'][1]) > floor($linkpage->getLinkPageLimit()/2)){
+        if(count($tplVals['LINKS']) > floor($linkpage->getLinkPageLimit()/2)){
 
             $lpc = $linkpage->getLinkPageLimit()/2;
-            $lpc = (floor($lpc) != $lpc && count($tplVals['LINKS'][1]) == $linkpage->getLinkPageLimit()) ? $lpc+1 : $lpc;
+            $lpc = (floor($lpc) != $lpc && count($tplVals['LINKS']) == $linkpage->getLinkPageLimit()) ? $lpc+1 : $lpc;
 
-            $tplVals['LINKS2'][0] = $tplVals['LINKS'][0];
-
-            $chunks = array_chunk($tplVals['LINKS'][1],$lpc);
-            $tplVals['LINKS2'][1] = $chunks[1];
-            $tplVals['LINKS'][1]  = $chunks[0];
+            $chunks = array_chunk($tplVals['LINKS'],$lpc);
+            $tplVals['LINKS2'] = $chunks[1];
+            $tplVals['LINKS']  = $chunks[0];
 
         }
         /* --- Above Bit SHOULD be working how I want now --- */
@@ -236,5 +232,6 @@
     $tpl = new cloudmark\tpl($templateDir.'/view.htpl',$tplVals,TRUE);
     $tpl->setPath($templateDir);
 
+    //var_export($tplVals); die();
     print $tpl->buildOutput();
 ?>

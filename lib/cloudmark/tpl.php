@@ -126,11 +126,10 @@ namespace cloudmark;
             }
 
             foreach($foreach_controls as $x){
-
                 if(is_array($this->tpl_values[$x[1]]) && count($this->tpl_values[$x[1]]) > 0){
                     $build = '';
-                    if(isset($this->tpl_values[$x[1]][1]) && count($this->tpl_values[$x[1]][1]) > 0){
-                        foreach($this->tpl_values[$x[1]][1] as $y){
+                    if(isset($this->tpl_values[$x[1]]) && count($this->tpl_values[$x[1]]) > 0){
+                        foreach($this->tpl_values[$x[1]] as $y){
                             $build .= (new tpl($this->tpl_path.'/'.$x[2],$y,FALSE,FALSE,$this->tpl_path))->buildOutput();
                         }
                     }
