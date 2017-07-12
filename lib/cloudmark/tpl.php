@@ -10,6 +10,7 @@ namespace cloudmark;
         protected $tpl_vars = [];
         protected $tpl_values = [];
         protected $tpl_removeUnused = FALSE;
+        protected $tpl_preserveTests = FALSE;
         protected $tpl_path = '';
         protected $tpl_values_build = [];
         protected $tpl_pathSet = FALSE;
@@ -18,7 +19,7 @@ namespace cloudmark;
 
 
 
-        public function __construct($template,array $tplvals=NULL,$removeUnused=FALSE,bool $isIncluded=FALSE,$presetPath=FALSE){
+        public function __construct($template,array $tplvals=NULL,$removeUnused=FALSE,bool $isIncluded=FALSE,$presetPath=FALSE,$preTests=FALSE){
             if(is_a($template,'tplHelper')){
                 echo "THIS SHOULD NOT TRIGGER CURRENTLY";
                 $this->tpl_raw = $template->template();
@@ -41,6 +42,9 @@ namespace cloudmark;
                     $this->tpl_path = $presetPath;
                     $this->tpl_pathSet = TRUE;
                 }
+                if($preTests == TRUE){
+                    $this->tpl_preserveTests = TRUE;
+                }
             }
         }
 
@@ -59,7 +63,9 @@ namespace cloudmark;
         }
 
         protected function blankOutSection($section){
-            $this->tpl_working = preg_replace('/'.preg_quote($section,'/').'/','',$this->tpl_working,1);
+            if($this->tpl_preserveTests == FALSE){
+                $this->tpl_working = preg_replace('/'.preg_quote($section,'/').'/','',$this->tpl_working,1);
+            }
         }
 
         protected function replaceSection($section,$replacement){
@@ -68,6 +74,10 @@ namespace cloudmark;
 
         public function setVals(array $tplvals){
             $this->tpl_values = $tplvals;
+        }
+
+        public function setPreserveTests(bool $preserve){
+            $this->tpl_preserveTests = $preserve;
         }
 
         public function setPath($path){
@@ -89,6 +99,7 @@ namespace cloudmark;
         }
 
         protected function procIf(){
+
             if($this->errorCheck()){
                 return;
             }
@@ -103,7 +114,7 @@ namespace cloudmark;
                 if(!isset($this->tpl_values[$x[2]])){
                     $this->blankOutSection($x[0]);
                 }else{
-                    $this->replaceSection($x[0],(new tpl($x[3],$this->tpl_values,TRUE,TRUE,$this->tpl_path))->buildOutput());
+                    $this->replaceSection($x[0],(new tpl($x[3],$this->tpl_values,$this->tpl_removeUnused,TRUE,$this->tpl_path,$this->tpl_preserveTests))->buildOutput());
                 }
             }
         }
@@ -126,11 +137,11 @@ namespace cloudmark;
             }
 
             foreach($foreach_controls as $x){
-                if(is_array($this->tpl_values[$x[1]]) && count($this->tpl_values[$x[1]]) > 0){
+                if(isset($this->tpl_values[$x[1]]) && is_array($this->tpl_values[$x[1]]) && count($this->tpl_values[$x[1]]) > 0){
                     $build = '';
                     if(isset($this->tpl_values[$x[1]]) && count($this->tpl_values[$x[1]]) > 0){
                         foreach($this->tpl_values[$x[1]] as $y){
-                            $build .= (new tpl($this->tpl_path.'/'.$x[2],$y,FALSE,FALSE,$this->tpl_path))->buildOutput();
+                            $build .= (new tpl($this->tpl_path.'/'.$x[2],$y,FALSE,FALSE,$this->tpl_path,$this->tpl_preserveTests))->buildOutput();
                         }
                     }
                     $this->replaceSection($x[0],$build);
@@ -164,7 +175,7 @@ namespace cloudmark;
                     if(isset($this->tpl_values[$val['2']]) && is_array($this->tpl_values[$val['2']])){
                         $build = '';
                         foreach($this->tpl_values[$val['2']] as $rep){
-                            $build .= (new tpl($val['3'],$rep,TRUE,TRUE,$this->tpl_path))->buildOutput();
+                            $build .= (new tpl($val['3'],$rep,$this->tpl_removeUnused,TRUE,$this->tpl_path,$this->tpl_preserveTests))->buildOutput();
                         }
                         $this->replaceSection($val[0],$build);
                     }else{
@@ -211,7 +222,7 @@ namespace cloudmark;
                     $file = null;
                 }
                 if($file != null){
-                    $this->replaceSection($x[0],(new tpl($file,$this->tpl_values,TRUE,FALSE,$this->tpl_path))->buildOutput());
+                    $this->replaceSection($x[0],(new tpl($file,$this->tpl_values,$this->tpl_removeUnused,FALSE,$this->tpl_path,$this->tpl_preserveTests))->buildOutput());
                 }
             }
         }
@@ -243,6 +254,7 @@ namespace cloudmark;
                     $this->tpl_working = preg_replace('/\\{% ?'.preg_quote($x,'/').' ?%\\}\r?\n?/',$this->tpl_values[$x],$this->tpl_working);
                 }else{
                     if($this->tpl_removeUnused == TRUE){
+                        echo "doing this";
                         $this->tpl_working = preg_replace('/\\{% ?'.preg_quote($x,'/').' ?%\\}\r?\n?/','',$this->tpl_working);
                     }
                 }

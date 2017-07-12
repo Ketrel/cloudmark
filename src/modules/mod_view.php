@@ -237,8 +237,9 @@
     }else{
         $tpl = new cloudmark\tpl($templateDir.'/view.htpl',$tplVals,FALSE);
         $tpl->setPath($templateDir);
+        $tpl->setPreserveTests(TRUE);
         $interim = $tpl->buildOutput();
-        $tpl = new cloudmark\tpl($interim,$tplCustom,TRUE,TRUE);
+        $tpl = new cloudmark\tpl($interim,$tplCustom,FALSE,TRUE);
         $tpl->setPath($templateDir);
         echo $tpl->buildOutput();
     }
