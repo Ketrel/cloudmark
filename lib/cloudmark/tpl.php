@@ -232,13 +232,28 @@ namespace cloudmark;
             }
         }
 
-        public function devderp(){
-            header("Content-type: text/plain");
-            print_r($this->tpl_vars);
+        protected function procVariables($delim='%'){
+
+            //$regex_match = '/\\{'.$delim.' ?([\'\\.A-Za-z0-9:\\-\\/\\\]+) ?'.$delim.'\\}/i';
+            $regex_match = '/\\{'.$delim.' ?([\'\\.\' A-Za-z0-9:\\-\\/\\\]+?) ?'.$delim.'\\}/i';
+
+            preg_match_all($regex_match,$this->tpl_working,$this->tpl_vars,PREG_PATTERN_ORDER);
+            $this->tpl_vars = array_values(array_unique($this->tpl_vars[1]));
+            foreach($this->tpl_vars as $x){
+                if(isset($this->tpl_values[$x]) && !is_array($this->tpl_values[$x])){
+                    $this->tpl_working = preg_replace('/\\{'.$delim.' ?'.preg_quote($x,'/').' ?'.$delim.'\\}\r?\n?/',$this->tpl_values[$x],$this->tpl_working);
+                }else{
+                    if($this->tpl_removeUnused == TRUE){
+                        $this->tpl_working = preg_replace('/\\{'.$delim.' ?'.preg_quote($x,'/').' ?'.$delim.'\\}\r?\n?/','',$this->tpl_working);
+                    }
+                }
+            }
+
         }
 
         public function process(){
 
+            $this->procVariables('!');
             $this->procIf();
             $this->procInclude();
             $this->procEForeach();
@@ -249,22 +264,7 @@ namespace cloudmark;
                 return;
             }
 
-            //Rework this into a function and make it match the above stuff
-            $regex_match = '/\\{% ?([\'\\.A-Za-z0-9:\\-\\/\\\]+) ?%\\}/i';
-
-            preg_match_all($regex_match,$this->tpl_working,$this->tpl_vars,PREG_PATTERN_ORDER);
-            $this->tpl_vars = array_values(array_unique($this->tpl_vars[1]));
-            foreach($this->tpl_vars as $x){
-                if(isset($this->tpl_values[$x]) && !is_array($this->tpl_values[$x])){
-                    $this->tpl_working = preg_replace('/\\{% ?'.preg_quote($x,'/').' ?%\\}\r?\n?/',$this->tpl_values[$x],$this->tpl_working);
-                }else{
-                    if($this->tpl_removeUnused == TRUE){
-                        $this->tpl_working = preg_replace('/\\{% ?'.preg_quote($x,'/').' ?%\\}\r?\n?/','',$this->tpl_working);
-                    }
-                }
-            }
-
-
+            $this->procVariables();
 
         }
 

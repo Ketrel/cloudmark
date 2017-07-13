@@ -39,22 +39,22 @@
                     'SUBSEC'        =>[
                                        [
                                         'LINKNAME'=>'Add Link',
-                                        'URL'=>'./index.php?s=mod&act=addl',
+                                        'URL'=>'./index.php?s=mod&amp;act=addl',
                                         'ACTIVE'=>((isset($getArray['act']) && $getArray['act'] == "addl") ? " active" : ''),
                                        ],
                                        [
                                         'LINKNAME'=>'Add Cat',
-                                        'URL'=>'./index.php?s=mod&act=addc',
+                                        'URL'=>'./index.php?s=mod&amp;act=addc',
                                         'ACTIVE'=>((isset($getArray['act']) && $getArray['act'] == "addc") ? " active" : ''),
                                        ],
                                        [
                                         'LINKNAME'=>'Change Link',
-                                        'URL'=>'./index.php?s=mod&act=changel',
+                                        'URL'=>'./index.php?s=mod&amp;act=changel',
                                         'ACTIVE'=>((isset($getArray['act']) && $getArray['act'] == "changel") ? " active" : ''),
                                        ],
                                        [
                                         'LINKNAME'=>'Change Cat',
-                                        'URL'=>'./index.php?s=mod&act=changec',
+                                        'URL'=>'./index.php?s=mod&amp;act=changec',
                                         'ACTIVE'=>((isset($getArray['act']) && $getArray['act'] == "changec") ? " active" : ''),
                                        ],
                                       ],
