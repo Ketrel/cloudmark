@@ -3,37 +3,12 @@
     <head>
 {% include 'header.htpl' %}
     </head>
-    <body> {% include 'inc-navbar' %}
+    <body> {% include 'inc/inc-navbar.htpl' %}
         <br />
-{% include 'inc-subsec.htpl' %}
+{% include 'inc/inc-subsec.htpl' %}
         <div id="main" class="container bg-faded rounded p-3">
 {% if:FORM %}
-            <form action="." method="get">
-                <div class="row">
-                    <div class="form-group col">
-                        <label for="title">Link Title</label>
-                        <input class="form-control" type="text" id="title" name="title" />
-                        <br />
-                        <label for="url">URL</label>
-                        <input class="form-control" type="url" id="url" name="url" />
-                        <br />
-                        <label for="comment">Comment</label>
-                        <input class="form-control" type="text" id="comment" name="comment" placeholder="Optional Comment..." />
-                    </div>
-                    <div class="form-group col">
-                        <label for="cats">Categories</label>
-                        <!--<select multiple class="form-control" id="cats" name="cats" size="15">-->
-                        <select class="form-control" id="cats" name="cats" size="15">
-                            {% FORM %}
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col text-center">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </div>
-            </form>
+{% include 'forms/form.htpl' %}
 {% endif:FORM %}
         </div>
 {% if:FOOTER %}

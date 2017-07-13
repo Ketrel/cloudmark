@@ -9,6 +9,6 @@
                     <a class="nav-item nav-link{% ACTIVE %}" href="{% URL %}">{% LINKNAME %}</a>
 {% eeforeach:NAVLINKS%}
                 </div>
-{% include 'inc-search' %}
+{% include 'inc/inc-search' %}
             </div>
         </div>

@@ -4,7 +4,7 @@
 {% include 'header.htpl' %}
     </head>
     <body>
-{% include 'inc-navbar' %}
+{% include 'inc/inc-navbar.htpl' %}
         <br />
         <div id="main" class="container-fluid">
 {% if:BREADCRUMBS %}
