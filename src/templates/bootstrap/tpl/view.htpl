@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+{% include 'header.htpl' %}
+    </head>
+    <body>
+{% include 'inc-navbar' %}
+        <br />
+        <div id="main" class="container-fluid">
+{% if:BREADCRUMBS %}
+            <div class="breadcrumb">
+                {% BREADCRUMBS %}
+            </div>
+{% endif:BREADCRUMBS %}
+{% if:SEARCHSTRING %}
+            <div class="alert alert-warning">
+                <strong>Search Results</strong>: Showing results for '{% SEARCHSTRING %}'
+                <span class="pull-right">
+                    <a href="{%SEARCHUNDO%}" class="close">&times;</a>
+                </span>
+            </div>    
+{% endif:SEARCHSTRING %}
+{% if:CATEGORIES %}
+            <div class="container-fluid bg-faded p-3 rounded">
+                <h3>Categories{% if:CATEGORY %} - {% CATEGORY %}{% endif:CATEGORY %}</h3>
+                <div class="card-deck" id="categories">
+{% foreach:CATEGORIES use 'entry-cat.htpl' %}
+                </div>
+            </div>
+{% endif:CATEGORIES %}
+{% if:LINKS %}
+            <div class="container-fluid bg-faded p-2 rounded">
+                <h3>Links</h3>
+                <div class="card-deck" id="links">
+                    <div class="card">
+                        <div class="card-block">
+                            <ul class="mb-0">
+{% foreach:LINKS use 'entry-link.htpl' %}
+                            </ul>
+                        </div>
+                    </div>
+{% if:LINKS2 %}
+                    <div class="card">
+                        <div class="card-block">
+                            <ul class="mb-0">
+{% foreach:LINKS2 use 'entry-link.htpl' %}
+                            </ul>
+                        </div>
+                    </div>
+{% endif:LINKS2 %}
+                </div>
+{% if:PAGINATION %}
+                <br />
+                <ul class="pagination justify-content-center">
+{% foreach:PAGINATION use 'paginate.htpl' %}
+                </ul>
+{% endif:PAGINATION %}
+            </div>
+{% endif:LINKS %}
+        </div>
+{% if:FOOTER %}
+        <div class="footer small text-white" style="background: #686868;">
+            {% FOOTER %}
+        </div>
+{% endif:FOOTER %}
+    </body>
+</html>

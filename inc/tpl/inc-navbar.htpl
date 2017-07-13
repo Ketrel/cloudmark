@@ -1,8 +1,0 @@
-        <div id="nav" class="navbar navbar-toggleable-sm navbar-inverse" style="background: #686868;">
-            <div class="navbar-brand">{%TITLE%}</div>
-            <div class="navbar-nav">
-{%EFOREACH:NAVLINKS%}
-                <a class="nav-item nav-link{%ACTIVE%}" href="{%URL%}">{%LINKNAME%}</a>
-{%EEFOREACH:NAVLINKS%}
-            </div>
-        </div>
