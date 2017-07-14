@@ -47,7 +47,7 @@
                                         'URL'=>'./index.php?s=mod&amp;act=addc',
                                         'ACTIVE'=>((isset($getArray['act']) && $getArray['act'] == "addc") ? " active" : ''),
                                        ],
-                                       [
+/*                                       [
                                         'LINKNAME'=>'Change Link',
                                         'URL'=>'./index.php?s=mod&amp;act=changel',
                                         'ACTIVE'=>((isset($getArray['act']) && $getArray['act'] == "changel") ? " active" : ''),
@@ -56,12 +56,18 @@
                                         'LINKNAME'=>'Change Cat',
                                         'URL'=>'./index.php?s=mod&amp;act=changec',
                                         'ACTIVE'=>((isset($getArray['act']) && $getArray['act'] == "changec") ? " active" : ''),
-                                       ],
+                                       ],*/
                                       ],
                 ];
 
     $tplVals['TEMPLATE'] = $templateRelPath;
-
+    $tplVals['GETVALS'] = [];
+    foreach($getArray as $k=>$v){
+        $tplVals['GETVALS'][] = [
+                                 'GETKEY'=>$k,
+                                 'GETVAL'=>$v
+                                ];
+    }
 
     $tplVals['FORM'] = '';
     foreach(printCatsB($allCats,"&nbsp;") as $val){

@@ -16,6 +16,9 @@
                         <select class="form-control" id="cats" name="cats" size="15">
                             {% FORM %}
                         </select>
+{% eforeach:GETVALS %}
+                        <input type="hidden" name="{% GETKEY %}" value="{% GETVAL %}" />
+{% eeforeach:GETVALS %}
                     </div>
                 </div>
                 <div class="row">

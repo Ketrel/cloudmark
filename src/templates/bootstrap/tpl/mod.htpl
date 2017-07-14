@@ -8,7 +8,7 @@
 {% include 'inc/inc-subsec.htpl' %}
         <div id="main" class="container bg-faded rounded p-3">
 {% if:FORM %}
-{% include 'forms/form.htpl' %}
+{% include 'forms/mod_form.htpl' %}
 {% endif:FORM %}
         </div>
 {% if:FOOTER %}
