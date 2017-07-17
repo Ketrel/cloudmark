@@ -22,9 +22,9 @@
         print("Location: ".'./'.basename($_SERVER['PHP_SELF'])."?s=view");
         die();
     }elseif($section == 'view'){
-        require_once(BASEUSEDIR."/src/modules/mod_view.php");
+        require_once(BASEUSEDIR."/src/sections/sec_view.php");
     }elseif($section == 'mod' && isset($config['enableMod']) && $config['enableMod'] == true){
-        require_once(BASEUSEDIR."/src/modules/mod_mod.php");
+        require_once(BASEUSEDIR."/src/sections/sec_mod.php");
     }else{
         header("Location: ".'./'.basename($_SERVER['PHP_SELF'])."?s=view");
     }
