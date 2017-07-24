@@ -4,36 +4,68 @@ namespace cloudmark;
 
 class dbinsert extends db {
 
-    protected deleteLinkFromCats($l_id){
+    protected function deleteLinkFromCats($linkID){
 
 
     }
 
-    protected deleteLink($l_id){
+    protected function deleteLink($linkID){
 
-        $this->deleteLinkFromCats($l_id);
+        $this->deleteLinkFromCats($linkID);
     }
 
-    protected addLinkToCats($l_id, array $l_cats){
+    protected function addLinkToCats($linkID, array $linkCats){
+        /* --- BEGIN BASE QUERY --- */
+            $baseQuery = "";
+        /* --- END BASE QUERY --- */
 
+        $query = $baseQuery;
+        $l_insert = $this->db_db->prepare($query);
+
+        try {
+            // Execute Here //
+        } catch(Exception $e) {
+            throw new Exception("Error Adding Link To Category/Categories");
+        }
 
     }
 
 
     /* ------------------ */
 
-    public addLink($l_title, $l_url, array $l_cats){
+    public function addLink($linkTitle, $linkURL, array $linkCats){
+        /* --- BEGIN BASE QUERY --- */
+            $baseQuery = "";
+        /* --- END BASE QUERY --- */
+
+        $query = $baseQuery;
+        $l_insert = $this->db_db->prepare($query);
+
+        try{
+            $this->db_db->beginTransaction();
+            $l_insert->execute();
+            $linkID = $this->db_db->lastInsertId();
+            $this->addLinkToCats($linkID);
+            $this->db_db->commit();
+        } catch(Exception $e) {
+            $this->db_db->rollback();
+            throw new Exception("Error Inserting Link To DB");
+        }
 
 
-        $l_id = "???"; // Until db stuff added, just to avoid error
-        $this->addLinkToCats($l_id);
     }
 
 
-    public updateLink($l_id, $l_title, $l_url, array $l_cats){
+    public function updateLink($linkID, $linkTitle, $linkURL, array $linkCats){
+        /* --- BEGIN BASE QUERY --- */
+            $baseQuery = "";
+        /* --- END BASE QUERY --- */
 
-        $this->deleteLinkFromCats($l_id);
-        $this->addLinkToCats($l_cats);
+
+
+
+        $this->deleteLinkFromCats($linkID);
+        $this->addLinkToCats($linkCats);
     }
 }
 

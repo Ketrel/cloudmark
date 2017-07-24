@@ -1,2 +1,4 @@
 /testdata.db
 /vendor
+/test.php
+/src/sections/sec_test.php
