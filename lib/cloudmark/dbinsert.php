@@ -33,12 +33,17 @@ class dbinsert extends db {
 
     /* ------------------ */
 
-    public function addLink($linkTitle, $linkURL, array $linkCats){
+    public function addLink($linkTitle, $linkURL, array $linkCats, $linkDescription=null){
         /* --- BEGIN BASE QUERY --- */
-            $baseQuery = "";
+            $baseQuery = "INSERT INTO `links` (`title`,`url`) values(:title,:url)";
         /* --- END BASE QUERY --- */
 
-        $query = $baseQuery;
+        if(!is_null($linkDescription)){
+            $query = str_replace(["`url`",":url"],["`url`,`description`",":url,:description"],$baseQuery);
+        }else{
+            $query = $baseQuery;
+        }
+
         $l_insert = $this->db_db->prepare($query);
 
         try{
